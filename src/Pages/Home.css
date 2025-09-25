@@ -1,0 +1,179 @@
+/* ========= PAGE BASE ========= */
+.home-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #33678D, #62d0f5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ========= INITIAL LOGO ANIMATION ========= */
+.logo-animation-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #33678D, #A9D3E1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: hideLogoWrapper 3.5s forwards;
+}
+
+.logo-animation {
+  width: 300px;
+  height: 300px;
+  animation: shrinkAndFade 4s ease-in-out forwards;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+@keyframes shrinkAndFade {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  15% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.3) translateY(-180px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.3) translateY(-180px);
+    opacity: 0;
+  }
+}
+
+@keyframes hideLogoWrapper {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* ========= FINAL LOGO ON PAGE ========= */
+.logo-top-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeInLogo 1s ease-in-out 3.5s forwards;
+}
+.logo-top {
+  width: 250px;
+  height: 250px;
+  animation: popIn 0.6s ease-in-out 4s forwards;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInLogo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========= HOME TEXT CONTENT ========= */
+.home-content {
+  text-align: center;
+  color: white;
+  max-width: 600px;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeInContent 1s ease-in-out 3.8s forwards;
+}
+
+@keyframes fadeInContent {
+  to {
+    opacity: 1;
+  }
+}
+
+.home-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  line-height: 1.3;
+  animation: textSlideUp 1s ease-out 4s forwards;
+  opacity: 0;
+}
+
+@keyframes textSlideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ========= BUTTONS ========= */
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeInButtons 1s ease-in-out 4.4s forwards;
+}
+
+@keyframes fadeInButtons {
+  to {
+    opacity: 1;
+  }
+}
+
+.home-btn {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.login-btn {
+  background-color: #2563eb;
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #1e40af;
+}
+
+.register-btn {
+  background-color: #22c55e;
+  color: white;
+}
+
+.register-btn:hover {
+  background-color: #15803d;
+}

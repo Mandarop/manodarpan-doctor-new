@@ -1,0 +1,20 @@
+
+
+.navbar {
+  background: linear-gradient(to bottom, #33678D, #62d0f5);
+  padding: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-logo {
+  height: 40px;
+}
+
+.navbar-title {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600;     /* font-semibold */
+  font-family: 'Poppins', sans-serif;
+}
