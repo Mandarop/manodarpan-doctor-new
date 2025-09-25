@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import './styles/global.css';
+import './Styles/global.css'; // Make sure folder is 'Styles' with uppercase S
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
