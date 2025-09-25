@@ -1,58 +1,62 @@
 import React, { useEffect, useState } from "react";
-import { auth, db } from "../../Services/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
-import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { getDoctorData } from "../../Services/staticData";
 import "./DashboardHome.css";
 
 const DashboardHome = () => {
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedDay, setSelectedDay] = useState('Monday');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        console.log("No user is logged in.");
-        setLoading(false);
-        return;
-      }
-
-      console.log("Logged in user email:", user.email);
-
+    const fetchDoctorData = async () => {
       try {
-        const doctorsSnapshot = await getDocs(collection(db, "doctors"));
-        let matchedDoctor = null;
-
-        doctorsSnapshot.forEach((doc) => {
-          const data = doc.data();
-          if (data.email.toLowerCase() === user.email.toLowerCase()) {
-            matchedDoctor = { id: doc.id, ...data };
-          }
-        });
-
-        if (matchedDoctor) {
-          setDoctor(matchedDoctor);
-        } else {
-          console.log("No doctor found with this email.");
-        }
+        const doctorData = await getDoctorData();
+        setDoctor(doctorData);
       } catch (error) {
-        console.error("Error fetching doctor:", error);
+        console.error("Error fetching doctor data:", error);
       } finally {
         setLoading(false);
       }
-    });
+    };
 
-    return () => unsubscribe();
+    fetchDoctorData();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigate("/");  // ✅ Redirect to start page with Login & Register options
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+  const handleLogout = () => {
+    navigate("/");
+  };
+
+  const getAvailableSlots = () => {
+    if (!doctor || !doctor.availability) return [];
+    const allSlots = doctor.availability[selectedDay] || [];
+    // Limit to only 4-5 slots
+    return allSlots.slice(0, 5);
+  };
+
+  const getNextAvailableDays = () => {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const today = new Date().getDay();
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+    return days.map(day => {
+      const dayIndex = dayNames.indexOf(day);
+      const daysUntil = dayIndex > today ? dayIndex - today : (7 - today) + dayIndex;
+      const date = new Date();
+      date.setDate(date.getDate() + daysUntil);
+      
+      return {
+        name: day,
+        date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        available: doctor?.availability?.[day]?.length > 0
+      };
+    });
+  };
+
+  const formatTime = (timeString) => {
+    const [start, end] = timeString.split(' - ');
+    return `${start} - ${end}`;
   };
 
   if (loading) return <p className="loading-text">Loading...</p>;
@@ -67,25 +71,60 @@ const DashboardHome = () => {
           </div>
 
           <div className="info-card">
-            <p><strong>Your ID:</strong> {doctor.id}</p>
-            <p><strong>Qualification:</strong> {doctor.qualification}</p>
-            <p><strong>Location:</strong> {doctor.location}</p>
-            <div className="availability-section">
-  <p><strong>Clinic Days & Timings:</strong></p>
-  {doctor.availability ? (
-    <ul className="availability-list">
-      {Object.keys(doctor.availability).map((day) => (
-        <li key={day}>
-          <strong>{day}:</strong>{" "}
-          {doctor.availability[day].map((slot, idx) => slot.time).join(", ")}
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>No availability set.</p>
-  )}
-</div>
+            <div className="doctor-profile">
+              <div className="profile-avatar">
+                <span className="avatar-text">Dr. {doctor.fullName.split(' ')[1]?.charAt(0) || 'D'}</span>
+              </div>
+              <div className="profile-details">
+                <h2 className="profile-name">{doctor.fullName}</h2>
+                <p className="profile-qualification">{doctor.qualification}</p>
+                <p className="profile-location">📍 {doctor.location}</p>
+                <p className="profile-id">ID: {doctor.id}</p>
+              </div>
+            </div>
+          </div>
 
+          {/* Appointment Management Section */}
+          <div className="appointment-section">
+            <div className="section-header">
+              <h2 className="section-title">Appointment Management</h2>
+              <div className="day-selector">
+                {getNextAvailableDays().map((day) => (
+                  <button
+                    key={day.name}
+                    className={`day-button ${selectedDay === day.name ? 'active' : ''} ${!day.available ? 'unavailable' : ''}`}
+                    onClick={() => setSelectedDay(day.name)}
+                    disabled={!day.available}
+                  >
+                    <span className="day-name">{day.name}</span>
+                    <span className="day-date">{day.date}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="slots-grid">
+              {getAvailableSlots().map((slot, index) => (
+                <div key={index} className={`slot-card ${slot.booked >= slot.limit ? 'booked' : 'available'}`}>
+                  <div className="slot-time">{formatTime(slot.time)}</div>
+                  <div className="slot-status">
+                    {slot.booked >= slot.limit ? (
+                      <span className="status-badge booked">Booked</span>
+                    ) : (
+                      <span className="status-badge available">Available</span>
+                    )}
+                  </div>
+                  <div className="slot-duration">30 min</div>
+                </div>
+              ))}
+            </div>
+            
+            {getAvailableSlots().length === 0 && (
+              <div className="empty-state">
+                <div className="empty-icon">📅</div>
+                <p>No available slots for {selectedDay}</p>
+              </div>
+            )}
           </div>
 
           <div className="about-card">

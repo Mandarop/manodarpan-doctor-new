@@ -1,34 +1,78 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getPatientById } from '../../Services/staticData';
+import './PatientProfile.css';
 
 function PatientProfile() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [patient, setPatient] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Dummy patient detail
-  const patient = {
-    id,
-    name: 'John Doe',
-    age: 24,
-    email: 'john@example.com',
-    reports: [
-      { type: 'PHQ-9', score: 15, date: '2025-06-01' },
-      { type: 'GAD-7', score: 10, date: '2025-06-01' },
-    ],
-  };
+  useEffect(() => {
+    const fetchPatient = async () => {
+      try {
+        const patientData = await getPatientById(id);
+        setPatient(patientData);
+      } catch (error) {
+        console.error("Error fetching patient:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchPatient();
+  }, [id]);
+
+  if (loading) return <p>Loading patient details...</p>;
+  if (!patient) return <p>Patient not found.</p>;
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-2">Patient Profile: {patient.name}</h2>
-      <p className="mb-1">Age: {patient.age}</p>
-      <p className="mb-4">Email: {patient.email}</p>
-      <h3 className="text-lg font-semibold mb-2">Assessment Reports</h3>
-      <ul>
-        {patient.reports.map((report, idx) => (
-          <li key={idx} className="border p-2 mb-2">
-            <strong>{report.type}</strong>: Score {report.score} on {report.date}
-          </li>
-        ))}
-      </ul>
+    <div className="patient-profile-container">
+      <div className="profile-header">
+        <button onClick={() => navigate('/dashboard/patients')} className="back-button">
+          <svg className="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Patients
+        </button>
+        <h2 className="profile-title">Patient Profile: {patient.patientName}</h2>
+      </div>
+      
+      <div className="patient-details">
+        <div className="detail-row">
+          <div className="detail-item">
+            <span className="detail-label">📅 Date:</span>
+            <span className="detail-value">{patient.date}</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-label">🕐 Time:</span>
+            <span className="detail-value">{patient.slotTime} ({patient.slotDuration})</span>
+          </div>
+        </div>
+        <div className="detail-row">
+          <div className="detail-item">
+            <span className="detail-label">👤 Age:</span>
+            <span className="detail-value">{patient.age} years, {patient.gender}</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-label">📞 Phone:</span>
+            <span className="detail-value">{patient.phone}</span>
+          </div>
+        </div>
+        <div className="detail-row full-width">
+          <div className="detail-item">
+            <span className="detail-label">📧 Email:</span>
+            <span className="detail-value">{patient.email}</span>
+          </div>
+        </div>
+        <div className="detail-row full-width">
+          <div className="detail-item">
+            <span className="detail-label">🏥 Primary Concerns:</span>
+            <span className="detail-value">{patient.concerns}</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
