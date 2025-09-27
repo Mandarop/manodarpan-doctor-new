@@ -29,8 +29,9 @@
 
 .analytics-grid {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 2rem;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto auto;
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
@@ -110,7 +111,8 @@
 
 /* Progress Chart */
 .progress-chart {
-  grid-column: 1 / -1;
+  grid-column: 1;
+  grid-row: 2;
 }
 
 .chart-container {
@@ -151,78 +153,65 @@
   background: #ef4444;
 }
 
-.chart-grid {
-  display: flex;
-  gap: 1rem;
-  align-items: end;
+/* Multi-line Chart */
+.multiline-chart {
+  width: 100%;
   height: 200px;
-  padding: 1rem 0;
+  margin-top: 1rem;
+  overflow-x: auto;
 }
 
-.chart-point {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.chart-svg {
+  width: 100%;
+  min-width: 800px;
   height: 100%;
 }
 
-.point-header {
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.5rem;
+/* Additional Analytics */
+.additional-analytics {
+  grid-column: 1;
+  grid-row: 4;
 }
 
-.point-bars {
-  flex: 1;
-  display: flex;
-  align-items: end;
-  gap: 0.25rem;
-  width: 100%;
-  max-width: 60px;
-}
-
-.bar-container {
+.insights-container {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  width: 100%;
+  gap: 1rem;
 }
 
-.bar {
-  position: relative;
-  border-radius: 4px 4px 0 0;
-  min-height: 20px;
+.insight-item {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  transition: all 0.3s ease;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
-.bar.anxiety {
-  background: linear-gradient(to top, #f59e0b, #fbbf24);
+.insight-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
 }
 
-.bar.depression {
-  background: linear-gradient(to top, #ef4444, #f87171);
-}
-
-.bar-value {
-  color: white;
-  font-size: 0.75rem;
+.insight-content h4 {
+  font-size: 1rem;
   font-weight: 600;
-  padding: 0.25rem;
+  color: #1f2937;
+  margin: 0 0 0.25rem 0;
 }
 
-.point-date {
-  font-size: 0.75rem;
+.insight-content p {
+  font-size: 0.875rem;
   color: #6b7280;
-  margin-top: 0.5rem;
+  margin: 0;
+  line-height: 1.4;
 }
 
 /* Summary Stats */
 .summary-stats {
-  grid-column: 1 / -1;
+  grid-column: 1;
+  grid-row: 3;
 }
 
 .stats-grid {
@@ -254,57 +243,6 @@
   letter-spacing: 0.5px;
 }
 
-/* Quick Actions */
-.quick-actions {
-  grid-column: 1 / -1;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.875rem;
-}
-
-.action-btn.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.action-btn.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-}
-
-.action-btn.secondary {
-  background: #f8fafc;
-  color: #374151;
-  border: 2px solid #e5e7eb;
-}
-
-.action-btn.secondary:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  transform: translateY(-2px);
-}
-
-.action-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
 .analytics-loading {
   display: flex;
   justify-content: center;
@@ -318,18 +256,8 @@
 @media (max-width: 1024px) {
   .analytics-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .progress-chart {
-    grid-column: 1;
-  }
-  
-  .summary-stats {
-    grid-column: 1;
-  }
-  
-  .quick-actions {
-    grid-column: 1;
+    grid-template-rows: auto auto auto auto;
+    gap: 1rem;
   }
 }
 
@@ -342,42 +270,38 @@
     font-size: 2rem;
   }
   
-  .chart-grid {
-    gap: 0.5rem;
+  .multiline-chart {
+    height: 150px;
   }
   
-  .point-bars {
-    max-width: 40px;
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
   
-  .action-buttons {
-    flex-direction: column;
+  .stat-item {
+    padding: 1rem;
   }
   
-  .action-btn {
-    justify-content: center;
+  .stat-value {
+    font-size: 2rem;
   }
 }
 
 @media (max-width: 640px) {
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
   
-  .chart-grid {
-    flex-direction: column;
-    height: auto;
-    gap: 1rem;
+  .multiline-chart {
+    height: 120px;
   }
   
-  .chart-point {
-    flex-direction: row;
-    height: auto;
+  .insights-container {
+    gap: 0.75rem;
   }
   
-  .point-bars {
-    flex-direction: row;
-    max-width: none;
-    width: 100px;
+  .insight-item {
+    padding: 0.75rem;
   }
 }

@@ -64,7 +64,16 @@ export const staticData = {
       progress: [
         { week: 1, anxiety: 12, depression: 8, date: '2024-01-01' },
         { week: 2, anxiety: 10, depression: 6, date: '2024-01-08' },
-        { week: 4, anxiety: 8, depression: 5, date: '2024-01-22' }
+        { week: 3, anxiety: 9, depression: 5, date: '2024-01-15' },
+        { week: 4, anxiety: 8, depression: 5, date: '2024-01-22' },
+        { week: 5, anxiety: 7, depression: 4, date: '2024-01-29' },
+        { week: 6, anxiety: 6, depression: 4, date: '2024-02-05' },
+        { week: 7, anxiety: 5, depression: 3, date: '2024-02-12' },
+        { week: 8, anxiety: 4, depression: 3, date: '2024-02-19' },
+        { week: 9, anxiety: 3, depression: 2, date: '2024-02-26' },
+        { week: 10, anxiety: 2, depression: 2, date: '2024-03-05' },
+        { week: 11, anxiety: 1, depression: 1, date: '2024-03-12' },
+        { week: 12, anxiety: 1, depression: 1, date: '2024-03-19' }
       ]
     },
     {
@@ -85,7 +94,16 @@ export const staticData = {
       progress: [
         { week: 1, anxiety: 18, depression: 14, date: '2024-01-01' },
         { week: 2, anxiety: 16, depression: 12, date: '2024-01-08' },
-        { week: 4, anxiety: 14, depression: 10, date: '2024-01-22' }
+        { week: 3, anxiety: 15, depression: 11, date: '2024-01-15' },
+        { week: 4, anxiety: 14, depression: 10, date: '2024-01-22' },
+        { week: 5, anxiety: 13, depression: 9, date: '2024-01-29' },
+        { week: 6, anxiety: 12, depression: 8, date: '2024-02-05' },
+        { week: 7, anxiety: 11, depression: 7, date: '2024-02-12' },
+        { week: 8, anxiety: 10, depression: 6, date: '2024-02-19' },
+        { week: 9, anxiety: 9, depression: 5, date: '2024-02-26' },
+        { week: 10, anxiety: 8, depression: 4, date: '2024-03-05' },
+        { week: 11, anxiety: 7, depression: 3, date: '2024-03-12' },
+        { week: 12, anxiety: 6, depression: 2, date: '2024-03-19' }
       ]
     },
     {
@@ -105,8 +123,17 @@ export const staticData = {
       status: 'scheduled',
       progress: [
         { week: 1, anxiety: 6, depression: 7, date: '2024-01-01' },
-        { week: 2, anxiety: 5, depression: 6, date: '2024-01-08' },
-        { week: 4, anxiety: 4, depression: 5, date: '2024-01-22' }
+        { week: 2, anxiety: 7, depression: 8, date: '2024-01-08' },
+        { week: 3, anxiety: 8, depression: 9, date: '2024-01-15' },
+        { week: 4, anxiety: 9, depression: 10, date: '2024-01-22' },
+        { week: 5, anxiety: 10, depression: 11, date: '2024-01-29' },
+        { week: 6, anxiety: 11, depression: 12, date: '2024-02-05' },
+        { week: 7, anxiety: 12, depression: 13, date: '2024-02-12' },
+        { week: 8, anxiety: 13, depression: 14, date: '2024-02-19' },
+        { week: 9, anxiety: 14, depression: 15, date: '2024-02-26' },
+        { week: 10, anxiety: 15, depression: 16, date: '2024-03-05' },
+        { week: 11, anxiety: 16, depression: 17, date: '2024-03-12' },
+        { week: 12, anxiety: 17, depression: 18, date: '2024-03-19' }
       ]
     },
     {
@@ -125,9 +152,18 @@ export const staticData = {
       concerns: 'Work-related stress and burnout',
       status: 'completed',
       progress: [
-        { week: 1, anxiety: 11, depression: 9, date: '2024-01-01' },
+        { week: 1, anxiety: 8, depression: 6, date: '2024-01-01' },
         { week: 2, anxiety: 9, depression: 7, date: '2024-01-08' },
-        { week: 4, anxiety: 7, depression: 5, date: '2024-01-22' }
+        { week: 3, anxiety: 10, depression: 8, date: '2024-01-15' },
+        { week: 4, anxiety: 11, depression: 9, date: '2024-01-22' },
+        { week: 5, anxiety: 12, depression: 10, date: '2024-01-29' },
+        { week: 6, anxiety: 13, depression: 11, date: '2024-02-05' },
+        { week: 7, anxiety: 14, depression: 12, date: '2024-02-12' },
+        { week: 8, anxiety: 15, depression: 13, date: '2024-02-19' },
+        { week: 9, anxiety: 16, depression: 14, date: '2024-02-26' },
+        { week: 10, anxiety: 17, depression: 15, date: '2024-03-05' },
+        { week: 11, anxiety: 18, depression: 16, date: '2024-03-12' },
+        { week: 12, anxiety: 19, depression: 17, date: '2024-03-19' }
       ]
     }
   ],

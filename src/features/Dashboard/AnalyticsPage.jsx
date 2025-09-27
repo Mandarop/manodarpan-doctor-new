@@ -53,7 +53,7 @@ function AnalyticsPage() {
       </div>
 
       <div className="analytics-grid">
-        {/* Patient Selection */}
+        {/* Top Left - Patient Selection */}
         <div className="analytics-card patient-selector">
           <h3 className="card-title">Select Patient</h3>
           <div className="patient-list">
@@ -80,7 +80,7 @@ function AnalyticsPage() {
           </div>
         </div>
 
-        {/* Progress Chart */}
+        {/* Top Right - Progress Chart */}
         {selectedPatient && (
           <div className="analytics-card progress-chart">
             <h3 className="card-title">Progress Over Time - {selectedPatient.patientName}</h3>
@@ -89,37 +89,105 @@ function AnalyticsPage() {
                 <div className="chart-legend">
                   <div className="legend-item">
                     <div className="legend-color anxiety"></div>
-                    <span>Anxiety Level</span>
+                    <span>Anxiety Level (Max: 21)</span>
                   </div>
                   <div className="legend-item">
                     <div className="legend-color depression"></div>
-                    <span>Depression Level</span>
+                    <span>Depression Level (Max: 27)</span>
                   </div>
                 </div>
               </div>
-              <div className="chart-grid">
-                {selectedPatient.progress.map((point, index) => (
-                  <div key={index} className="chart-point">
-                    <div className="point-header">Week {point.week}</div>
-                    <div className="point-bars">
-                      <div className="bar-container">
-                        <div className="bar anxiety" style={{ height: `${(point.anxiety / 20) * 100}%` }}>
-                          <span className="bar-value">{point.anxiety}</span>
-                        </div>
-                        <div className="bar depression" style={{ height: `${(point.depression / 20) * 100}%` }}>
-                          <span className="bar-value">{point.depression}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="point-date">{point.date}</div>
-                  </div>
-                ))}
+              <div className="multiline-chart">
+                <svg className="chart-svg" viewBox="0 0 800 200">
+                  {/* Y-axis grid lines */}
+                  {[0, 5, 10, 15, 20, 25, 30].map((value, index) => (
+                    <g key={index}>
+                      <line 
+                        x1="50" 
+                        y1={180 - (value / 30) * 160} 
+                        x2="750" 
+                        y2={180 - (value / 30) * 160} 
+                        stroke="#e5e7eb" 
+                        strokeWidth="1"
+                      />
+                      <text 
+                        x="45" 
+                        y={180 - (value / 30) * 160 + 5} 
+                        fontSize="12" 
+                        fill="#6b7280" 
+                        textAnchor="end"
+                      >
+                        {value}
+                      </text>
+                    </g>
+                  ))}
+                  
+                  {/* X-axis labels - 12 weeks */}
+                  {Array.from({length: 12}, (_, i) => i + 1).map((week, index) => (
+                    <text 
+                      key={index}
+                      x={50 + (index * 58.33)} 
+                      y="195" 
+                      fontSize="10" 
+                      fill="#6b7280" 
+                      textAnchor="middle"
+                    >
+                      W{week}
+                    </text>
+                  ))}
+                  
+                  {/* Anxiety line */}
+                  <polyline
+                    points={selectedPatient.progress.map((point, index) => 
+                      `${50 + (index * 58.33)},${180 - (point.anxiety / 30) * 160}`
+                    ).join(' ')}
+                    fill="none"
+                    stroke="#f59e0b"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  
+                  {/* Depression line */}
+                  <polyline
+                    points={selectedPatient.progress.map((point, index) => 
+                      `${50 + (index * 58.33)},${180 - (point.depression / 30) * 160}`
+                    ).join(' ')}
+                    fill="none"
+                    stroke="#ef4444"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  
+                  {/* Data points */}
+                  {selectedPatient.progress.map((point, index) => (
+                    <g key={index}>
+                      <circle 
+                        cx={50 + (index * 58.33)} 
+                        cy={180 - (point.anxiety / 30) * 160} 
+                        r="3" 
+                        fill="#f59e0b"
+                        stroke="white"
+                        strokeWidth="2"
+                      />
+                      <circle 
+                        cx={50 + (index * 58.33)} 
+                        cy={180 - (point.depression / 30) * 160} 
+                        r="3" 
+                        fill="#ef4444"
+                        stroke="white"
+                        strokeWidth="2"
+                      />
+                    </g>
+                  ))}
+                </svg>
               </div>
             </div>
           </div>
         )}
 
-        {/* Summary Stats */}
+        {/* Bottom Left - Summary Stats */}
         <div className="analytics-card summary-stats">
           <h3 className="card-title">Treatment Summary</h3>
           {selectedPatient && (
@@ -156,29 +224,34 @@ function AnalyticsPage() {
           )}
         </div>
 
-        {/* Quick Actions */}
-        <div className="analytics-card quick-actions">
-          <h3 className="card-title">Quick Actions</h3>
-          <div className="action-buttons">
-            <button className="action-btn primary">
-              <svg className="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Generate Report
-            </button>
-            <button className="action-btn secondary">
-              <svg className="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-              </svg>
-              Share Dashboard
-            </button>
-            <button className="action-btn secondary">
-              <svg className="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-              </svg>
-              Schedule Follow-up
-            </button>
-          </div>
+        {/* Bottom Right - Additional Analytics */}
+        <div className="analytics-card additional-analytics">
+          <h3 className="card-title">Progress Insights</h3>
+          {selectedPatient && (
+            <div className="insights-container">
+              <div className="insight-item">
+                <div className="insight-icon">📈</div>
+                <div className="insight-content">
+                  <h4>Trend Analysis</h4>
+                  <p>Overall improvement in both anxiety and depression levels over the treatment period.</p>
+                </div>
+              </div>
+              <div className="insight-item">
+                <div className="insight-icon">🎯</div>
+                <div className="insight-content">
+                  <h4>Treatment Goals</h4>
+                  <p>Target: Reduce anxiety below 10 and depression below 15 by week 12.</p>
+                </div>
+              </div>
+              <div className="insight-item">
+                <div className="insight-icon">⚠️</div>
+                <div className="insight-content">
+                  <h4>Risk Assessment</h4>
+                  <p>Monitor closely if scores exceed 20 for anxiety or 25 for depression.</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
